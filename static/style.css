@@ -1,0 +1,98 @@
+body{
+    background-color: lightblue;
+
+}
+.home{
+    position: sticky;
+    text-align: left;
+    background-color: dodgerblue;
+    padding: 15px;
+    color: aliceblue;
+}
+.home h1{
+    padding-left: 10px;
+}
+.main_div {
+    display: flex;
+    top: 25%;
+    left: 12%;
+    position: absolute;
+    height: 600px;
+    width: 1500px;
+    border-radius: 30px;
+}
+
+.main_left {
+    width: 65%;
+    padding: 20px;
+    background-color: skyblue;
+    border-right: 2px solid black;
+    
+}
+.main_left h2{
+    font-size: 50px;
+    text-align: center;
+}
+.main_left pre{
+    position: absolute;
+    /* left: 90px; */
+    text-align: center;
+    font-size: 15px;
+    margin: 0;
+}
+
+
+
+.main_right {
+    
+    width: 35%;
+    padding-top: 100px;
+    background-color: white;
+    text-align: center;
+    justify-content: space-between;
+}
+
+.acc{
+    padding: 10px;
+    gap: 10px;
+
+}
+.acc input{
+    width: 300px;
+    height: 40px;
+    background-color: aquamarine;
+    border-radius: 10px;
+}
+.fa-solid{
+    font-size: 20px;
+}
+
+.check{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 21%;
+}
+.check-login {
+    display: flex;
+}
+.check-password{
+    margin-right: 85px;
+}
+.button {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+.button-login{
+    background-color: rgb(235, 158, 131);
+    border: none;
+    width: 100px;
+    height: 30px;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: 1s;
+
+}
+.button-login:hover{
+    background-color: chartreuse;
+}
