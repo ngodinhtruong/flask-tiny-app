@@ -1,57 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="\static\style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <div class = 'home'>    
-        <h1>HOME</h1>
-    </div>
-    <div class = 'main_div'>
-        <div class="main_left">
-            <h2>Noi dung trang web</h2>
-            <pre>
-                1. Tạo một github repo có tên flask-tiny-app
-                2. Viết file Readme.MD chứa các thông tin sau:
-                    a. Thông tin cá nhân (Họ tên, mã sinh viên)
-                    b. Mô tả project (mô tả ý tưởng mà bạn dự định làm)
-                    c. Hướng dẫn cài đặt, chạy
-                    d. Link project đã triển khai của bạn
-                3. Tạo một thư mục docs trong đó có chứa các file v1.md, v2.md, v3.md....
-                ghi lại các thay đổi và screenshots của mỗi phiên bản phát hành (release version)
-                4. Push mã nguồn project có sẵn của bạn lên github (release version 1)
-                5. Thêm chức năng đăng nhập/ đăng ký (release version 2)
-            </pre>
-        </div>
+{% extends "index.html" %}
 
-        <div class="main_right">
-            <h2>Login account</h2>
-            <div class = 'acc name'>
-                <i class="fa-solid fa-user"></i>
-                <input type="text" name="Tài khoản" placeholder="Tài khoản">
+{% block form %}
+
+<div class='main_div'>
+    <form class="form" method="POST">
+        <p class="title">Sign in</p>
+
+        <label>
+            <input required="" placeholder="" type="email" class="input" name ='email_acc'>
+            <span>Email</span>
+        </label>
+
+        <label>
+            <input required="" placeholder="" type="password" class="input" name = 'password_acc'>
+            <span>Password</span>
+        </label>
+        <div class="check">
+            <div class="check-login">
+                <input type="checkbox">
+                <p>Đăng nhập lần sau</p>
             </div>
-            <div class = 'acc pass'>
-                <i class="fa-solid fa-lock"></i>
-                <input type="password" name="password" placeholder="Mật khẩu">
-            </div>
-            <div class="check">
-                <div class = 'check-login'>
-                    <input type="checkbox" name="remember" id="">
-                    <p>Đăng nhập lần sau</p>
-                </div>
-                <div class="check-password">
-                    <p>Quên mật khẩu ?</p>
-                </div>
-            </div>
-            <div class = 'button'>
-                <button class="button-login" name="LOGIN">LOGIN</button>
+            <div class="check-password">
+                <p>Quên mật khẩu ?</p>
             </div>
         </div>
-    </div>
+        <button class="submit">LOGIN</button>
+        <div class="sign_up" >
+            <p>Chưa có tài khoảng?</p>
+            <a href="{{ url_for('signup') }}"> Đăng ký </a>
+        </div>
+    </form>
     
-</body>
-</html>
+</div>
+
+{% endblock %}

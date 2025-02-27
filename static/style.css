@@ -43,10 +43,10 @@ body{
 
 
 
-.main_right {
-    
+.main_right {    
     width: 35%;
-    padding-top: 100px;
+    /* padding-top: px; */
+    /* padding-left: 50px; */
     background-color: white;
     text-align: center;
     justify-content: space-between;
@@ -70,15 +70,15 @@ body{
 .check{
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-left: 21%;
+    /* align-items: center; */
+    /* width: 370; */
+    /* margin-left: 21%; */
 }
 .check-login {
     display: flex;
+    margin-left: 20px;
 }
-.check-password{
-    margin-right: 85px;
-}
+
 .button {
     margin-top: 20px;
     margin-left: 20px;
