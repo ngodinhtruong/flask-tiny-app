@@ -62,15 +62,31 @@ def signup():
     errors = session.pop('error',None)
     return render_template('logup.html', errors=errors)
 
-@app.route('/signin')
+@app.route('/signin', methods = ['POST','GET'])
 def signin():
-    return render_template('login.html')
-
+    if request.method == 'POST':
+        user_email = request.form['email_acc']
+        user_pass = request.form['password_acc']
+        # Nếu chưa nhập gì
+        if user_email=='' or user_pass=='':
+            session['error_message'] =  "Vui lòng nhập đầy đủ email và mật khẩu"
+        else:
+            if user_email and user_pass:
+                user_sql = User.query.filter_by(user_email=user_email).first()
+                if user_sql and user_sql.user_password == user_pass:
+                    return redirect(url_for('home'))
+                else:
+                    session['error_message'] = 'Tai khoang hoac mat khau sai'
+        return redirect(url_for('signin'))
+                # return f'<h1> {user_email} </h1>'
+    # session.pop()
+    # error_message = 'khong co'
+    error_message = session.pop('error_message', None)  # Xóa thông báo sau khi load trang
+    return render_template('login.html', error_message=error_message)
 
 @app.route('/')
 def home():
     return render_template('index.html')
-
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()

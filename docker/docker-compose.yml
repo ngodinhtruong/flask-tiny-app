@@ -1,0 +1,22 @@
+services:
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    environment:
+      POSTGRES_USER: dinh
+      POSTGRES_PASSWORD: 123
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres_network  # Đổi tên mạng ở đây
+    restart: unless-stopped
+
+volumes:
+  postgres:  # Định nghĩa volume lưu trữ dữ liệu của PostgreSQL
+
+networks:
+  postgres_network:  # Định nghĩa mạng
+    driver: bridge   # Sử dụng driver mặc định cho mạng (hoặc có thể bỏ qua nếu muốn dùng driver mặc định)
