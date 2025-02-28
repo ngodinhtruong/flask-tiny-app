@@ -1,0 +1,44 @@
+.alert_circle_exclam{
+  /* font-family: "Roboto", sans-serif; */
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 20px;
+  background-color: #509AF8;
+  transition: opacity 0.5s ease-in-out;
+  animation: slideInup ease-in-out .5s, slideOutup   linear 3s forwards;
+  /* margin-bottom: 50px; */
+  /* height: 200px; */
+}
+.text{
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 7px;
+  padding-left: 10px;
+}
+.close{
+  padding-right: 10px;
+  font-size: 17px;
+  cursor: pointer;
+}
+@keyframes slideInup {
+  from{
+    opacity: 0;
+    transform: translateY(-80px);
+  }
+  to{
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes slideOutup {
+  to{
+    opacity: 0;
+    transform: translateY(0);
+  }
+}
+#close:target {
+  display: none;
+}
