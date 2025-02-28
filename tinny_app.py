@@ -21,12 +21,10 @@ class User(db.Model):
         self.user_email = user_email
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    errors = {"email": "", "password": ""}
-    success = {"email": "", "password": ""}
-    submitted = False  # Kiểm tra form đã submit chưa
+    # errors = {"email": "", "password": ""} # No keu la no luu lai 
+    # success = {"email": "", "password": ""}
 
     if request.method == 'POST':
-        submitted = True  # Đánh dấu form đã submit
 
         first_name = request.form.get('firstname')
         last_name = request.form.get('lastname')
@@ -36,33 +34,42 @@ def signup():
 
         if not first_name or not last_name or not email or not password or not confirm_password:
             flash("Lỗi: Vui lòng điền đầy đủ thông tin!", "error")
-            return render_template('logup.html', errors=errors, success=success, submitted=submitted)
+            return render_template('logup.html')
 
         full_name = first_name + " " + last_name  
 
         # Kiểm tra Email có tồn tại hay không
         existing_email = User.query.filter_by(user_email=email).first()
         if existing_email:
-            errors["email"] = "Email đã tồn tại!"
+            session["error"] = "Email đã tồn tại!"
             # success["email"] = "Email hợp lệ!"
         # Kiểm tra mật khẩu nhập lại có khớp không
         if password != confirm_password:
-            errors["password"] = "Mật khẩu nhập lại không khớp!"
+            session["error"] = "Mật khẩu nhập lại không khớp!"
 
-        if any(errors.values()):
-            return render_template('logup.html', errors=errors, success=success, submitted=submitted)
+        if any(session.values()):
+            return render_template('logup.html')
 
         # Nếu mọi thứ hợp lệ, lưu vào database
         new_user = User(user_name=full_name, user_password=password, user_email=email)
         db.session.add(new_user)
         db.session.commit()
+        
 
         flash("Đăng ký thành công! Hãy đăng nhập.", "success")
-        return redirect(url_for('signin'))
+        return redirect(url_for('signup'))
+    
+    errors = session.pop('error',None)
+    return render_template('logup.html', errors=errors)
 
-    return render_template('logup.html', errors=errors, success=success, submitted=submitted)
+@app.route('/signin')
+def signin():
+    return render_template('login.html')
 
 
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 if __name__ == '__main__':
     with app.app_context():

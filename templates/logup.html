@@ -22,8 +22,7 @@
             <input required placeholder="" type="email" class="input" name="email">
             <span>Email</span>
         </label>
-        <span class="error">{% if errors.get("email") %}{{ errors.get("email") }}{% endif %}</span>
-        <span class="success">{% if success.get("email") %}{{ success.get("email") }}{% endif %}</span>
+        <span>{% if errrors %} {{errors}} {% endif %}</span>
 
         <!-- Mật khẩu -->
         <label>
@@ -36,8 +35,7 @@
             <input required placeholder="" type="password" class="input" name="confirm_password">
             <span>Confirm password</span>
         </label>
-        <span class="error">{% if errors.get("password") %}{{ errors.get("password") }}{% endif %}</span>
-        <span class="success">{% if success.get("password") %}{{ success.get("password") }}{% endif %}</span>
+        <span> {% if errrors %} {{errors}} {% endif %}</span>
 
         <!-- Nút submit -->
         <button class="submit" type="submit">Submit</button>
