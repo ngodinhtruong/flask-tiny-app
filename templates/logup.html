@@ -2,37 +2,48 @@
 
 {% block form %}
 <div class="main_div">
-
-    <form class="form">
+    <form class="form" method="POST" action="{{ url_for('signup') }}">
         <p class="title">Register</p>
+
         <div class="flex">
             <label>
-                <input required="" placeholder="" type="text" class="input">
+                <input required placeholder="" type="text" class="input" name="firstname">
                 <span>Firstname</span>
             </label>
 
             <label>
-                <input required="" placeholder="" type="text" class="input">
+                <input required placeholder="" type="text" class="input" name="lastname">
                 <span>Lastname</span>
             </label>
         </div>
 
+        <!-- Email -->
         <label>
-            <input required="" placeholder="" type="email" class="input">
+            <input required placeholder="" type="email" class="input" name="email">
             <span>Email</span>
         </label>
+        <span class="error">{% if errors.get("email") %}{{ errors.get("email") }}{% endif %}</span>
+        <span class="success">{% if success.get("email") %}{{ success.get("email") }}{% endif %}</span>
 
+        <!-- Mật khẩu -->
         <label>
-            <input required="" placeholder="" type="password" class="input">
+            <input required placeholder="" type="password" class="input" name="password">
             <span>Password</span>
         </label>
+
+        <!-- Xác nhận mật khẩu -->
         <label>
-            <input required="" placeholder="" type="password" class="input">
+            <input required placeholder="" type="password" class="input" name="confirm_password">
             <span>Confirm password</span>
         </label>
-        <button class="submit">Submit</button>
-        <p class="signin">Đã có tài khoảng ? <a href="{{url_for('signin')}}">Đăng nhập</a> </p>
+        <span class="error">{% if errors.get("password") %}{{ errors.get("password") }}{% endif %}</span>
+        <span class="success">{% if success.get("password") %}{{ success.get("password") }}{% endif %}</span>
+
+        <!-- Nút submit -->
+        <button class="submit" type="submit">Submit</button>
+
+        <!-- Điều hướng đến trang đăng nhập -->
+        <p class="signin">Đã có tài khoản? <a href="{{ url_for('signin') }}">Đăng nhập</a></p>
     </form>
 </div>
-
 {% endblock %}

@@ -1,0 +1,7 @@
+/* Dấu cảnh báo cho email trùng */
+.warning {
+    color: red;
+    font-size: 14px;
+    display: none; /* Ẩn mặc định */
+    margin-left: 10px;
+}

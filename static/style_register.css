@@ -160,6 +160,12 @@ body{
   align-items: center;
   gap: 5px;
 }  
+.error {
+  color: red;
+  font-size: 14px;
+  display: block;
+  margin-top: 5px;
+}
 @keyframes pulse {
     from {
       transform: scale(0.9);

@@ -96,3 +96,16 @@ body{
 .button-login:hover{
     background-color: chartreuse;
 }
+.error {
+    color: red !important;  /* ✅ Đảm bảo lỗi có màu đỏ */
+    font-size: 14px;
+    display: block;
+    margin-top: 5px;
+}
+
+.success {
+    color: green;
+    font-size: 14px;
+    display: block;
+    margin-top: 5px;
+}
