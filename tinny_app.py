@@ -1,6 +1,5 @@
 from flask import Flask, redirect, url_for, render_template, request, flash, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 
 app = Flask(__name__)
@@ -24,6 +23,7 @@ class User(db.Model):
     user_role = db.Column(db.Integer, nullable=False, default=0)
     user_block = db.Column(db.Boolean, nullable=False, default=False)
     def __init__(self, user_name, user_password, user_email,user_role = 0,user_block = False):  
+
         self.user_name = user_name
         self.user_password = user_password
         self.user_email = user_email
@@ -98,8 +98,11 @@ def signup():
 
     return render_template('logup.html', errors=errors, form_data=form_data)
 
+
+
 @app.route('/signin', methods = ['POST','GET'])
 def signin():
+
     if current_user.is_authenticated:
         return redirect(url_for('dashboard' if current_user.user_role == 'user' else 'admin'))  # Chuyển hướng nếu đã đăng nhập
     
@@ -126,6 +129,13 @@ def signin():
     # error_message = 'khong co'
     error_message = session.pop('error_message', None)  # Xóa thông báo sau khi load trang
     return render_template('login.html', error_message=error_message)
+
+@app.route('/profile<name>')
+@login_required
+def profile():
+    return render_template('profile.html')
+
+
 @app.route('/logout')
 @login_required
 def log_out():
