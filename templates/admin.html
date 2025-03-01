@@ -1,0 +1,29 @@
+{% extends "home.html" %}
+
+{% block home %} 
+
+<div class='home'>
+    <form action="/" method="post">
+        <h1>HOME</h1>
+        <input class="button" type="submit" value="Đăng xuất" name="Đăng xuất">
+    </form>
+    
+</div>
+{% endblock %}
+
+{% block form %}
+<div class="form_1">
+    
+    <div class="profile">
+        <div class="img_admin">
+            <img src="{{url_for('static',filename='images/admin.png')}}" alt="Ảnh tròn" class="img-tron">
+        </div>
+            <p style="font-size: 30px;">Xin chào, <span style="font-weight: bold;  font-size: 30px;">Admin</span></p>
+            <span>admin@gmail.com</span>
+    </div>
+
+   <div class="interaction">
+        <h1> Danh sách user </h1>
+   </div> 
+</div>
+{% endblock %}

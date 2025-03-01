@@ -1,4 +1,16 @@
-{% extends "index.html" %}
+{% extends "home.html" %}
+
+{% block home %} 
+
+<div class='home'>
+    <form action="/" method="post">
+        <h1>HOME</h1>
+        <input class="button" type="submit" value="Sign in" name="sign in">
+    </form>
+    
+</div>
+{% endblock %}
+
 
 {% block form %}
 

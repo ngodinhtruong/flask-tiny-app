@@ -1,9 +1,18 @@
 from flask import Flask, redirect, url_for, render_template, request, flash, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
+<<<<<<< HEAD
 from werkzeug.security import generate_password_hash, check_password_hash
+=======
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+>>>>>>> 283d628f06093aed2cc69c684f76770e5a84e424
 
 app = Flask(__name__)
 app.secret_key = "secret"
+# 🔥 Khởi tạo LoginManager đúng cách
+login_manager = LoginManager()
+login_manager.init_app(app)  # Đúng cách!
+login_manager.login_view = 'signin'  # Nếu chưa đăng nhập, chuyển hướng đến login
+login_manager.login_message_category = 'info'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -15,11 +24,36 @@ class User(db.Model):
     user_name = db.Column(db.String(100), nullable=False)  # Cho phép họ tên giống nhau
     user_password = db.Column(db.String(100), nullable=False)
     user_email = db.Column(db.String(100), unique=True, nullable=False)  # Email phải là duy nhất
-
-    def __init__(self, user_name, user_password, user_email):  
+    user_role = db.Column(db.Integer, nullable=False, default=0)
+    user_block = db.Column(db.Boolean, nullable=False, default=False)
+    def __init__(self, user_name, user_password, user_email,user_role = 0,user_block = False):  
         self.user_name = user_name
         self.user_password = user_password
         self.user_email = user_email
+<<<<<<< HEAD
+=======
+        self.user_role = user_role
+        self.user_block = user_block
+    def is_active(self):
+        """Return True nếu user không bị block, nếu bị block thì False"""
+        return not self.is_blocked  # Nếu user bị block, Flask-Login sẽ không cho phép đăng nhập
+    def get_id(self):
+        return self.user_id
+    @property
+    def is_authenticated(self):
+        """Trả về True nếu user đã xác thực (đăng nhập thành công)."""
+        return True  # Luôn trả về True nếu user hợp lệ
+    @property
+    def is_anonymous(self):
+        """Trả về False vì không có user nào ẩn danh trong hệ thống."""
+        return False  # Hệ thống không hỗ trợ user ẩn danh
+# Fix lỗi: Thiết lập user_loader để Flask-Login có thể tìm 
+# user từ database
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))  # Tìm user theo ID
+
+>>>>>>> 283d628f06093aed2cc69c684f76770e5a84e424
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -71,6 +105,11 @@ def signup():
 
 @app.route('/signin', methods = ['POST','GET'])
 def signin():
+<<<<<<< HEAD
+=======
+    # if current_user.is_authenticated:
+    #     return redirect(url_for('dashboard' if current_user.user_role == 'user' else 'admin'))  # Chuyển hướng nếu đã đăng nhập
+>>>>>>> 283d628f06093aed2cc69c684f76770e5a84e424
     
     if request.method == 'POST':
         user_email = request.form['email_acc']
@@ -82,7 +121,11 @@ def signin():
             if user_email and user_pass:
                 user_sql = User.query.filter_by(user_email=user_email).first()
                 if user_sql and user_sql.user_password == user_pass:
-                    return redirect(url_for('home'))
+                    login_user(user_sql)
+                    if user_sql.user_role == 1:
+                        return redirect(url_for('admin'))
+                    else:
+                        return redirect(url_for('home'))
                 else:
                     session['error_message'] = 'Tai khoang hoac mat khau sai'
         return redirect(url_for('signin'))
@@ -91,10 +134,28 @@ def signin():
     # error_message = 'khong co'
     error_message = session.pop('error_message', None)  # Xóa thông báo sau khi load trang
     return render_template('login.html', error_message=error_message)
+@app.route('/logout')
+@login_required
+def log_out():
+    logout_user()
+    
+    return redirect(url_for('signin'))
 
-@app.route('/')
+@app.route('/admin', methods=['POST','GET'])
+@login_required
+def admin():
+    if request.method=='POST':
+        if request.form.get('Đăng xuất') == 'Đăng xuất':
+            return redirect(url_for('log_out'))
+    return render_template('admin.html',)
+
+
+@app.route('/',methods=['POST','GET'])
 def home():
-    return render_template('index.html')
+    if request.method=='POST':
+        if request.form.get('sign in') == 'Sign in':
+            return redirect(url_for('signin'))
+    return render_template('top_home.html')
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
