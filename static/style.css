@@ -2,9 +2,11 @@ body{
     background-color: lightblue;
 
 }
-.home{
-    position: sticky;
-    text-align: left;
+.home form{
+    display: flex;
+    /* flex-grow: 1; */
+    align-items: center;
+    justify-content: space-between;
     background-color: dodgerblue;
     padding: 15px;
     color: aliceblue;
