@@ -1,10 +1,7 @@
 from flask import Flask, redirect, url_for, render_template, request, flash, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
-<<<<<<< HEAD
 from werkzeug.security import generate_password_hash, check_password_hash
-=======
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
->>>>>>> 283d628f06093aed2cc69c684f76770e5a84e424
 
 app = Flask(__name__)
 app.secret_key = "secret"
@@ -30,8 +27,7 @@ class User(db.Model):
         self.user_name = user_name
         self.user_password = user_password
         self.user_email = user_email
-<<<<<<< HEAD
-=======
+
         self.user_role = user_role
         self.user_block = user_block
     def is_active(self):
@@ -53,7 +49,6 @@ class User(db.Model):
 def load_user(user_id):
     return User.query.get(int(user_id))  # Tìm user theo ID
 
->>>>>>> 283d628f06093aed2cc69c684f76770e5a84e424
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -105,11 +100,8 @@ def signup():
 
 @app.route('/signin', methods = ['POST','GET'])
 def signin():
-<<<<<<< HEAD
-=======
-    # if current_user.is_authenticated:
-    #     return redirect(url_for('dashboard' if current_user.user_role == 'user' else 'admin'))  # Chuyển hướng nếu đã đăng nhập
->>>>>>> 283d628f06093aed2cc69c684f76770e5a84e424
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard' if current_user.user_role == 'user' else 'admin'))  # Chuyển hướng nếu đã đăng nhập
     
     if request.method == 'POST':
         user_email = request.form['email_acc']
