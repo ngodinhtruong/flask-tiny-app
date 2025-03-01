@@ -1,5 +1,6 @@
-from flask import Flask, redirect, url_for, render_template, request, flash, session
+from flask import Flask, redirect, url_for, render_template, request, flash, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = "secret"
@@ -19,13 +20,13 @@ class User(db.Model):
         self.user_name = user_name
         self.user_password = user_password
         self.user_email = user_email
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    # errors = {"email": "", "password": ""} # No keu la no luu lai 
-    # success = {"email": "", "password": ""}
+    errors = {}  #Đây là biến lỗi để lưu được nhiều lỗi xuất hiện cũng lúc 
+    form_data = session.get("form_data", {"firstname": "", "lastname": "", "email": ""}) # Lấy dữ liệu từ session và hiển thị lại form nếu có lỗi
 
     if request.method == 'POST':
-
         first_name = request.form.get('firstname')
         last_name = request.form.get('lastname')
         email = request.form.get('email')
@@ -33,37 +34,44 @@ def signup():
         confirm_password = request.form.get('confirm_password')
 
         if not first_name or not last_name or not email or not password or not confirm_password:
-            flash("Lỗi: Vui lòng điền đầy đủ thông tin!", "error")
-            return render_template('logup.html')
+            errors["general"] = "Vui lòng nhập đầy đủ thông tin!"
 
-        full_name = first_name + " " + last_name  
+        if password and confirm_password and password != confirm_password:
+            errors["confirm_password"] = "Mật khẩu không trùng khớp!"
 
-        # Kiểm tra Email có tồn tại hay không
         existing_email = User.query.filter_by(user_email=email).first()
         if existing_email:
-            session["error"] = "Email đã tồn tại!"
-            # success["email"] = "Email hợp lệ!"
-        # Kiểm tra mật khẩu nhập lại có khớp không
-        if password != confirm_password:
-            session["error"] = "Mật khẩu nhập lại không khớp!"
+            errors["email"] = "Email đã tồn tại!"
 
-        if any(session.values()):
-            return render_template('logup.html')
+        # Kiểm tra các lỗi tồn tại trong secssion
+        if errors:
+            session["form_data"] = {
+                "firstname": first_name if "firstname" not in errors else "",
+                "lastname": last_name if "lastname" not in errors else "",
+                "email": email if "email" not in errors else ""
+            }
+            session["errors"] = errors
+            return redirect(url_for('signup'))
 
-        # Nếu mọi thứ hợp lệ, lưu vào database
-        new_user = User(user_name=full_name, user_password=password, user_email=email)
+        # Lưu
+        new_user = User(user_name=f"{first_name} {last_name}", user_password=password, user_email=email)
         db.session.add(new_user)
         db.session.commit()
-        
+
+        session.pop("form_data", None)
+        session.pop("errors", None)
 
         flash("Đăng ký thành công! Hãy đăng nhập.", "success")
-        return redirect(url_for('signup'))
-    
-    errors = session.pop('error',None)
-    return render_template('logup.html', errors=errors)
+        return redirect(url_for('signin'))
+
+    form_data = session.pop("form_data", {"firstname": "", "lastname": "", "email": ""})
+    errors = session.pop("errors", {})
+
+    return render_template('logup.html', errors=errors, form_data=form_data)
 
 @app.route('/signin', methods = ['POST','GET'])
 def signin():
+    
     if request.method == 'POST':
         user_email = request.form['email_acc']
         user_pass = request.form['password_acc']

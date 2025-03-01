@@ -5,37 +5,51 @@
     <form class="form" method="POST" action="{{ url_for('signup') }}">
         <p class="title">Register</p>
 
+        <!-- Firstname và Lastname -->
         <div class="flex">
             <label>
-                <input required placeholder="" type="text" class="input" name="firstname">
+                <input required placeholder="" type="text" class="input" name="firstname" value="{{ form_data.get('firstname', '') }}">
                 <span>Firstname</span>
             </label>
+            {% if errors and errors.get("firstname") %}
+                <span class="error">{{ errors["firstname"] }}</span>
+            {% endif %}
 
             <label>
-                <input required placeholder="" type="text" class="input" name="lastname">
+                <input required placeholder="" type="text" class="input" name="lastname" value="{{ form_data.get('lastname', '') }}">
                 <span>Lastname</span>
             </label>
+            {% if errors and errors.get("lastname") %}
+                <span class="error">{{ errors["lastname"] }}</span>
+            {% endif %}
         </div>
 
         <!-- Email -->
         <label>
-            <input required placeholder="" type="email" class="input" name="email">
+            <input required placeholder="" type="email" class="input" name="email" value="{{ form_data.get('email', '') }}">
             <span>Email</span>
         </label>
-        <span>{% if errrors %} {{errors}} {% endif %}</span>
+        {% if errors and errors.get("email") %}
+            <span class="error">{{ errors["email"] }}</span>
+        {% endif %}
 
         <!-- Mật khẩu -->
         <label>
             <input required placeholder="" type="password" class="input" name="password">
             <span>Password</span>
         </label>
+        {% if errors and errors.get("password") %}
+            <span class="error">{{ errors["password"] }}</span>
+        {% endif %}
 
         <!-- Xác nhận mật khẩu -->
         <label>
             <input required placeholder="" type="password" class="input" name="confirm_password">
             <span>Confirm password</span>
         </label>
-        <span> {% if errrors %} {{errors}} {% endif %}</span>
+        {% if errors and errors.get("confirm_password") %}
+            <span class="error">{{ errors["confirm_password"] }}</span>
+        {% endif %}
 
         <!-- Nút submit -->
         <button class="submit" type="submit">Submit</button>
