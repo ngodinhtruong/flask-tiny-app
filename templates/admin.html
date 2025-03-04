@@ -1,29 +1,74 @@
 {% extends "home.html" %}
 
-{% block home %} 
-
+{% block home %}
 <div class='home'>
-    <form action="/" method="post">
+    <form action="" method="post">
         <h1>HOME</h1>
-        <input class="button" type="submit" value="Đăng xuất" name="Đăng xuất">
+        <input class="button" type="submit" value="logout" name="Đăng xuất">
     </form>
-    
 </div>
+
 {% endblock %}
 
 {% block form %}
 <div class="form_1">
-    
     <div class="profile">
-        <div class="img_admin">
-            <img src="{{url_for('static',filename='images/admin.png')}}" alt="Ảnh tròn" class="img-tron">
+        <div class="profile-header">
+            <div class="img_admin">
+                <img src="{{url_for('static',filename='images/admin.png')}}" alt="Ảnh tròn" class="img-tron">
+                <div class="img-overlay"></div>
+            </div>
+            <div class="decor-circle"></div>
         </div>
-            <p style="font-size: 30px;">Xin chào, <span style="font-weight: bold;  font-size: 30px;">Admin</span></p>
-            <span>admin@gmail.com</span>
+        <div class="profile-info">
+            <p class="greeting">Xin chào, <span class="admin-name">Admin</span></p>
+            <span class="email-tag"><i class="fa-solid fa-envelope"></i> <span class="email-text">admin@gmail.com</span></span>
+        </div>
+        <div class="recent-activity">
+            <h3>Hoạt động gần đây</h3>
+            <p class="activity-item"><i class="fa-solid fa-user-check"></i> Chặn user #123 - 5 phút trước</p>
+            <p class="activity-item"><i class="fa-solid fa-user-plus"></i> Thêm user mới - 1 giờ trước</p>
+        </div>
     </div>
 
-   <div class="interaction">
-        <h1> Danh sách user </h1>
-   </div> 
+    <div class="interaction">
+        <h1>Danh sách user</h1>
+        <div class="table-user">
+            <table class='table table-striped table-hover'>
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Tên</th>
+                        <th scope="col">Email</th>
+                        <th colspan="2">Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in rows: %}
+                    <tr>
+                        <td scope="row">{{ row.id }}</td>
+                        <td>{{ row.username }}</td>
+                        <td>{{ row.email }}</td>
+                        <td>
+                            <form action="/admin" method="post" class="status-form">
+                                <input type="hidden" name="user_id" value="{{ row.id }}">
+                                <label class="switch">
+                                    <input type="checkbox" name="user_block" {% if row.user_block ==0 %}checked{% endif %} onchange="this.form.submit()">
+                                    <span class="slider"></span>
+                                </label>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/admin" method="post" class="reset-form">
+                                <input type="hidden" name="user_id" value="{{ row.id }}">
+                                <button name="reset-password"  onchange="this.form.submit()"> Reset password </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 {% endblock %}

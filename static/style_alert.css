@@ -1,44 +1,68 @@
-.alert_circle_exclam{
-  /* font-family: "Roboto", sans-serif; */
+.alert_circle_exclam {
+  position: absolute;
+  top: 210px; /* Giữ nguyên vị trí */
+  width: 370px; /* Giữ nguyên chiều rộng */
   font-size: 17px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-radius: 20px;
-  background-color: #509AF8;
-  transition: opacity 0.5s ease-in-out;
-  animation: slideInup ease-in-out .5s, slideOutup   linear 3s forwards;
-  /* margin-bottom: 50px; */
-  /* height: 200px; */
+  background-color: #f8d7da; /* Màu nền đỏ nhạt cho thông báo lỗi */
+  color: #721c24; /* Màu chữ đỏ đậm */
+  border: 2px solid #f5c6cb; /* Viền đỏ nhạt */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm bóng nhẹ để nổi bật */
+  padding: 10px 15px; /* Tăng padding cho thoáng */
+  transition: opacity 0.5s ease-in-out; /* Giữ hiệu ứng opacity */
+  animation: slideInup ease-in-out 0.5s, slideOutup linear 4s forwards; /* Giữ nguyên hoạt hình */
 }
-.text{
+
+.alert.text {
   display: flex;
   justify-content: start;
   align-items: center;
-  gap: 7px;
+  gap: 10px; /* Tăng gap cho đẹp hơn */
   padding-left: 10px;
 }
-.close{
+
+.alert.text i {
+  font-size: 20px; /* Tăng kích thước biểu tượng chấm than */
+}
+
+.info__title {
+  margin: 0; /* Xóa margin mặc định của <p> */
+  font-family: "Roboto", sans-serif; /* Dùng font Roboto nếu có */
+  font-weight: 500; /* Chữ đậm nhẹ */
+  font-size: 16px; /* Giảm nhẹ kích thước chữ cho cân đối */
+}
+
+.alert.close {
   padding-right: 10px;
-  font-size: 17px;
+  font-size: 20px; /* Tăng kích thước biểu tượng "x" */
   cursor: pointer;
+  transition: color 0.3s ease; /* Thêm hiệu ứng màu khi hover */
 }
+
+.alert.close:hover i {
+  color: #a71d2a; /* Đổi màu "x" thành đỏ đậm hơn khi hover */
+}
+
+/* Giữ nguyên keyframes */
 @keyframes slideInup {
-  from{
-    opacity: 0;
-    transform: translateY(-80px);
+  from {
+      opacity: 0;
+      transform: translateY(-80px);
   }
-  to{
-    opacity: 1;
-    transform: translateY(0);
+  to {
+      opacity: 1;
+      transform: translateY(0);
   }
 }
+
 @keyframes slideOutup {
-  to{
-    opacity: 0;
-    transform: translateY(0);
+  to {
+      opacity: 0;
+      transform: translateY(-40px);
   }
 }
-#close:target {
-  display: none;
-}
+
+/* #close:target không hoạt động trong ngữ cảnh này, bỏ đi vì không dùng JS */
