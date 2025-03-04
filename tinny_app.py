@@ -1,6 +1,7 @@
 from flask import Flask, redirect, url_for, render_template, request, flash, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+import os
 
 app = Flask(__name__)
 app.secret_key = "secret"
@@ -10,41 +11,43 @@ login_manager.init_app(app)  # Đúng cách!
 login_manager.login_view = 'signin'  # Nếu chưa đăng nhập, chuyển hướng đến login
 login_manager.login_message_category = 'info'
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mydatabase.db'
+# Chỉ định thư mục database
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+DB_DIR = os.path.join(BASE_DIR, 'database')
+os.makedirs(DB_DIR, exist_ok=True)
+app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(DB_DIR, "mydatabase.db")}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 
-class User(db.Model):
-    user_id = db.Column(db.Integer, primary_key=True)
-    user_name = db.Column(db.String(100), nullable=False)  # Cho phép họ tên giống nhau
-    user_password = db.Column(db.String(100), nullable=False)
-    user_email = db.Column(db.String(100), unique=True, nullable=False)  # Email phải là duy nhất
+class User(db.Model,UserMixin):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), nullable=False)  # Cho phép họ tên giống nhau
+    password = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)  # Email phải là duy nhất
     user_role = db.Column(db.Integer, nullable=False, default=0)
     user_block = db.Column(db.Boolean, nullable=False, default=False)
-    def __init__(self, user_name, user_password, user_email,user_role = 0,user_block = False):  
 
-        self.user_name = user_name
-        self.user_password = user_password
-        self.user_email = user_email
+    def __repr__(self):
+        return f"{self.username}"  # Sửa user_name thành username
 
-        self.user_role = user_role
-        self.user_block = user_block
-    def is_active(self):
-        """Return True nếu user không bị block, nếu bị block thì False"""
-        return not self.is_blocked  # Nếu user bị block, Flask-Login sẽ không cho phép đăng nhập
+    # Các phương thức cần cho Flask-Login (nếu dùng)
     def get_id(self):
-        return self.user_id
-    @property
-    def is_authenticated(self):
-        """Trả về True nếu user đã xác thực (đăng nhập thành công)."""
-        return True  # Luôn trả về True nếu user hợp lệ
-    @property
-    def is_anonymous(self):
-        """Trả về False vì không có user nào ẩn danh trong hệ thống."""
-        return False  # Hệ thống không hỗ trợ user ẩn danh
-# Fix lỗi: Thiết lập user_loader để Flask-Login có thể tìm 
+        return str(self.id)
+
+    
 # user từ database
+class Post(db.Model):
+    __tablename__ = 'posts'
+    post_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  # Sửa 'user.user_id' thành 'users.id'
+    title = db.Column(db.String(255), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+
+    def __repr__(self):
+        return f"Post(id={self.post_id}, title={self.title})"
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))  # Tìm user theo ID
@@ -68,7 +71,7 @@ def signup():
         if password and confirm_password and password != confirm_password:
             errors["confirm_password"] = "Mật khẩu không trùng khớp!"
 
-        existing_email = User.query.filter_by(user_email=email).first()
+        existing_email = User.query.filter_by(email=email).first()
         if existing_email:
             errors["email"] = "Email đã tồn tại!"
 
@@ -83,7 +86,7 @@ def signup():
             return redirect(url_for('signup'))
 
         # Lưu
-        new_user = User(user_name=f"{first_name} {last_name}", user_password=password, user_email=email)
+        new_user = User(user_name=f"{first_name} {last_name}", password=password, email=email)
         db.session.add(new_user)
         db.session.commit()
 
@@ -103,8 +106,8 @@ def signup():
 @app.route('/signin', methods = ['POST','GET'])
 def signin():
 
-    if current_user.is_authenticated:
-        return redirect(url_for('dashboard' if current_user.user_role == 'user' else 'admin'))  # Chuyển hướng nếu đã đăng nhập
+    # if current_user.is_authenticated:
+    #     return redirect(url_for('dashboard' if current_user.user_role == 'user' else 'admin'))  # Chuyển hướng nếu đã đăng nhập
     
     if request.method == 'POST':
         user_email = request.form['email_acc']
@@ -114,13 +117,13 @@ def signin():
             session['error_message'] =  "Vui lòng nhập đầy đủ email và mật khẩu"
         else:
             if user_email and user_pass:
-                user_sql = User.query.filter_by(user_email=user_email).first()
-                if user_sql and user_sql.user_password == user_pass:
+                user_sql = User.query.filter_by(email=user_email).first()
+                if user_sql and user_sql.password == user_pass:
                     login_user(user_sql)
                     if user_sql.user_role == 1:
                         return redirect(url_for('admin'))
                     else:
-                        return redirect(url_for('home'))
+                        return redirect(url_for('profile'))
                 else:
                     session['error_message'] = 'Tai khoang hoac mat khau sai'
         return redirect(url_for('signin'))
@@ -129,12 +132,6 @@ def signin():
     # error_message = 'khong co'
     error_message = session.pop('error_message', None)  # Xóa thông báo sau khi load trang
     return render_template('login.html', error_message=error_message)
-
-@app.route('/profile<name>')
-@login_required
-def profile():
-    return render_template('profile.html')
-
 
 @app.route('/logout')
 @login_required
@@ -149,7 +146,106 @@ def admin():
     if request.method=='POST':
         if request.form.get('Đăng xuất') == 'Đăng xuất':
             return redirect(url_for('log_out'))
-    return render_template('admin.html',)
+    return render_template('admin.html')
+
+# Xóa định nghĩa Post thứ hai để tránh trùng lặp
+# class Post(db.Model):
+#     post_id = db.Column(db.Integer, primary_key = True)
+#     title = db.Column(db.String(255), nullable = True)
+#     content = db.Column(db.String(255), nullable = True)
+#     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), nullable=False)
+    
+#     def __init__(self, title, content, user_id):
+#         self.title = title
+#         self.content = content
+#         self.user_id = user_id
+
+@app.route("/profile", methods=["GET", "POST"])
+@login_required
+def profile():
+    user_posts = Post.query.filter_by(user_id=current_user.user_id).all()
+    all_posts = Post.query.all()
+    
+    if request.method == "POST":
+        if request.form.get("Đăng xuất") == "Đăng xuất":
+            return redirect(url_for("log_out"))
+        if 'them_bai_viet' in request.form:
+            session['bai_viet'] = True
+            return redirect(url_for('profile'))
+        if 'Close_app' in request.form:
+            session.pop('bai_viet')
+        if request.form.get("accept") == "submit":
+            title = request.form.get("title")
+            content = request.form.get("content")
+            if not title and not content:
+                return render_template("profile.html",
+                                post = all_posts,
+                                them_bai_viet = True,
+                                error_no_content = 'Vui lòng nhập đầy đủ <span style = "">tiêu đề</span> và <span>nội dung</span>')
+            # Tạo bài viết mới và lưu vào DB
+            new_post = Post(
+                user_id=current_user.user_id,
+                title=title,
+                content=content
+            )
+            db.session.add(new_post)
+            db.session.commit()
+
+            session.pop('bai_viet', None)
+            return redirect(url_for('profile'))
+        
+    bai_viet = session.pop('bai_viet', False)
+    return render_template("profile.html", posts=all_posts, them_bai_viet=bai_viet)
+
+@app.route("/add_post", methods=["GET", "POST"])
+@login_required
+def add_content():
+
+    pass
+
+@app.route("/delete", methods=["POST"], endpoint="delete_pop")
+@app.route("/delete/<int:post_id>", methods=["POST"], endpoint="delete_pop")
+@login_required
+def delete_pop(post_id=None):
+    if post_id:
+        post = Post.query.filter_by(post_id=post_id, user_id=current_user.user_id).first()
+        if post:
+            db.session.delete(post)
+            db.session.commit()
+            flash("Bài viết đã được xóa thành công!", "success")
+        else:
+            flash("Bài viết không tồn tại hoặc bạn không có quyền xóa!", "warning")
+    else:
+        selected_ids = request.form.getlist("post_id")
+        if selected_ids:
+            Post.query.filter(Post.post_id.in_(selected_ids), Post.id == current_user.user_id).delete(synchronize_session=False)
+            db.session.commit()
+            flash("Các bài viết đã được xóa thành công!", "success")
+        else:
+            flash("Vui lòng chọn ít nhất một bài viết để xóa!", "warning")
+    return redirect(url_for("profile"))
+
+@app.route("/edit/<int:post_id>", methods=["GET", "POST"], endpoint="edit_post")
+@login_required
+def edit_post(post_id):
+    post = Post.query.filter_by(post_id=post_id, user_id=current_user.user_id).first()
+    if not post:
+        flash("Bài viết không tồn tại hoặc bạn không có quyền chỉnh sửa!", "warning")
+        return redirect(url_for("profile"))
+    
+    if request.method == "POST":
+        title = request.form.get("title")
+        content = request.form.get("content")
+        if title and content:
+            post.title = title
+            post.content = content
+            db.session.commit()
+            flash("Bài viết đã được cập nhật thành công!", "success")
+            return redirect(url_for("profile"))
+        else:
+            flash("Vui lòng nhập đầy đủ tiêu đề và nội dung!", "warning")
+    
+    return render_template("edit_post.html", post=post)
 
 
 @app.route('/',methods=['POST','GET'])
@@ -158,6 +254,8 @@ def home():
         if request.form.get('sign in') == 'Sign in':
             return redirect(url_for('signin'))
     return render_template('top_home.html')
+
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()

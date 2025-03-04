@@ -1,0 +1,120 @@
+/* create_edit.css */
+
+/* Container chính */
+.create-edit-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    padding: 20px;
+}
+
+/* Form */
+.create-edit-form {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 30px;
+    width: 100%;
+    max-width: 500px;
+    transition: all 0.3s ease;
+}
+
+.create-edit-form:hover {
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+/* Tiêu đề form */
+.create-edit-form h2 {
+    color: #34495e;
+    font-family: 'Roboto', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Label */
+.create-edit-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #666;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.1rem;
+}
+
+/* Input và Textarea */
+.create-edit-form input[type="text"],
+.create-edit-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: 'Open Sans', sans-serif;
+    transition: border-color 0.3s ease;
+}
+
+.create-edit-form input[type="text"]:focus,
+.create-edit-form textarea:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+/* Button */
+.create-edit-form button {
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    font-family: 'Roboto', sans-serif;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.create-edit-form button:hover {
+    background-color: #27ae60;
+    transform: scale(1.05);
+}
+
+/* Link "Quay lại" */
+.create-edit-form a {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #3498db;
+    text-decoration: none;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1rem;
+}
+
+.create-edit-form a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .create-edit-container {
+        padding: 10px;
+    }
+
+    .create-edit-form {
+        padding: 20px;
+        width: 90%;
+    }
+
+    .create-edit-form h2 {
+        font-size: 1.5rem;
+    }
+
+    .create-edit-form button {
+        font-size: 1rem;
+        padding: 10px 20px;
+    }
+}

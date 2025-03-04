@@ -1,25 +1,97 @@
 {% extends "home.html" %}
 
-{% block home %} 
-
+{% block home %}
 <div class='home'>
     <form action="/" method="post">
         <h1>HOME</h1>
         <input class="button" type="submit" value="Đăng xuất" name="Đăng xuất">
     </form>
-    
 </div>
 {% endblock %}
 
 {% block form %}
 <div class="form_1">
     <div class="profile">
-            <h1>Hello {{user_name}}</h1>
-            <span>{{user_email}}</span>
+        <div class="img_admin">
+            <img src="{{ url_for('static', filename='images/admin.png') }}" alt="Ảnh tròn" class="img-tron">
+        </div>
+        <p style="font-size: 30px;">Xin chào, <span style="font-weight: bold;">{{ user_name }}</span></p>
+        <span>user1@gmail.com</span>
+        <div></div>
     </div>
 
-   <div class="interaction">
-        <h1> Danh sách user </h1>
-   </div> 
+    <div class="interaction">
+        <h1>Danh Sách Các Bài Post Của Bạn</h1>
+
+
+        <form method="POST" action="">
+            <div class="button_add_post">
+                <button class="buttonbody add" value="them" name="them_bai_viet">Thêm Bài Viết</button>
+                <button type="submit" class="buttonbody delete">Xóa bài viết</button>
+            </div>
+
+        </form>
+
+        <!-- Form nhập liệu để thêm bài viết (hiển thị khi nhấn nút Thêm Bài Viết) -->
+        {% if them_bai_viet %}
+        <div class="popup">
+            <form method="POST" action="">
+                <div class="title_add">
+                    <div class="form_nhap_title">
+                        <label for="title">Tiêu đề:</label>
+                        <input type="text" name="title"
+                            placeholder="Nhập tiêu đề bài đăng...">
+                    </div>
+                    <form action="" method="POST">
+                        <button class="Close_app" type="submit" name="Close_app" value="close">X</button>
+                    </form>
+                </div>
+                <div class="body_add">
+                    <h2>Nội dung</h2>
+                    <textarea name="content" id="contentTextarea"
+                        placeholder="Nhập nội dung của bạn...">{{ content }}</textarea>
+                    {% if error_no_content %}
+                    <p style="color: red;">{{ error }}</p>
+                    {% endif %}
+                    <button type="submit" name="accept" value="submit" class="buttonbody add">OK</button>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+
+
+        <!-- Form xóa nhiều bài viết -->
+
+        <div class="all_post">
+            {% for post in posts %}
+            <div class='show_post'>
+                <input type="checkbox" name="post_id" value="{{ post.post_id }}" class="delete-checkbox">
+                <div class="Xoa">
+                    <div class='head'>
+                        <h2>{{ post.title }}</h2>
+                    </div>
+                    <div class="chucnang">
+                        <form method="POST" action="{{ url_for('delete_pop', post_id=post.post_id) }}">
+                            <button type="submit" class="buttonbody deletesmall">Xóa</button>
+                        </form>
+                        <form method="POST" action="{{ url_for('edit_post', post_id=post.post_id) }}">
+                            <button type="submit" class="buttonbody edit small">Chỉnh sửa</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="body">
+                    <p>{{ post.content }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Phân trang (nếu có) -->
+        {% if has_next %}
+        <form method="GET" action="{{ url_for('next_page', page=page+1) }}">
+            <button type="submit" class="next-btn">-></button>
+        </form>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}

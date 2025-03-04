@@ -1,0 +1,9 @@
+<!-- create_post.html -->
+<form method="POST" action="{{ url_for('create_post') }}">
+    <label for="title">Tiêu đề:</label>
+    <input type="text" name="title" required>
+    <label for="content">Nội dung:</label>
+    <textarea name="content" required></textarea>
+    <button type="submit">Đăng bài</button>
+</form>
+<a href="{{ url_for('profile') }}">Quay lại</a>

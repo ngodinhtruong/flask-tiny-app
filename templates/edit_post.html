@@ -1,0 +1,14 @@
+{% extends "home.html" %}
+
+{% block form %}
+<div class="form_1">
+    <h1>Chỉnh sửa bài viết</h1>
+    <form method="POST" action="">
+        <label for="title">Tiêu đề:</label>
+        <input type="text" name="title" id="title" value="{{ post.title }}" required>
+        <label for="content">Nội dung:</label>
+        <textarea name="content" id="content" required>{{ post.content }}</textarea>
+        <button type="submit" class="buttonbody add">Cập nhật</button>
+    </form>
+</div>
+{% endblock %}
