@@ -90,3 +90,4 @@ Dự án là một ứng dụng web (webapp) cho phép người dùng (user) t�
 ## 4. Triển khai project
  - Nền tảng: `Pythoanywhere`
  - Link: `https://ngotruongdinh.pythonanywhere.com/signin`
+ - github: `https://github.com/ngodinhtruong/flask-tiny-app/blob/master`
