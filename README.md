@@ -81,11 +81,11 @@ Dự án là một ứng dụng web (webapp) cho phép người dùng (user) t�
 - run:  `docker run -d -p 5000:5000 flask_tiny_app`
 
 **2. Window**
-- run file `setup_ex1.bat`
+- run  `setup_ex1.bat`
 
 **3. Ubuntu/linux**
-- run file `setup_ex1.sh`
-- run file `setup_ex1.zsh`
+- run  `setup_ex1.sh`
+- run  `setup_ex1.zsh`
 
 ## 4. Triển khai project
  - Nền tảng: `Pythoanywhere`
