@@ -1,0 +1,108 @@
+{% extends "home.html" %}
+
+{% block home %}
+<div class='home'>
+    <form action="/" method="post">
+        <h1>HOME</h1>
+        <input class="button" type="submit" value="Đăng xuất" name="Đăng xuất">
+    </form>
+</div>
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+{% endblock %}
+
+{% block form %}
+<div class="form_1">
+    
+    <div class="profile">
+        <div class="img_admin">
+            <img src="{{ url_for('static', filename='images/user.png') }}" alt="Ảnh tròn" class="img-tron">
+        </div>
+        <p style="font-size: 30px;">Xin chào, {{name}}<span style="font-weight: bold;">{{ user_name }}</span></p>
+        <span>{{email}}</span>
+        <div></div>
+    </div>
+
+    <div class="interaction_user">
+        <h1>Danh Sách Các Bài Post Của Bạn</h1>
+
+
+        <form method="POST" action="">
+            <div class="button_add_post">
+                <button class="buttonbody add" value="them" name="them_bai_viet">Thêm Bài Viết</button>
+                {% if xoa_bai_viet %}
+                <button class="buttonbody delete" name="xac_nhan_xoa">Xác Nhận Xóa</button>
+                {% else %}
+                <button class="buttonbody delete" name="xoa_bai_viet">Xóa Bài Viết</button>
+                {% endif %}
+            </div>
+
+            <div class="div_page">
+                {% if (current_page > 1) %} 
+                    <button class="page page_next" name="pre_page" value="{{current_page}}"> <i class="fa-solid fa-arrow-left"></i></button>
+                {% endif %}
+                <p class='page page_number'>{{current_page}}{% if max_page <=1 %} {% else %} / {{max_page}} {% endif %}</p>
+
+                {% if (current_page < max_page) %} 
+                    <button class="page page_next" name="next_page" value="{{current_page}}"> <i class="fa-solid fa-arrow-right"></i></button>
+                {% endif %}
+                <p>Số lượng bài đăng {{ posts | length }}</p>
+
+            </div>
+
+
+            <div class="all_post">
+
+                {% for post in posts %}
+                <div class='show_post'>
+                    {% if xoa_bai_viet %}
+                    <input type="checkbox" name="delete_posts" value="{{ post.post_id }}" class="delete-checkbox">
+                    {% endif %}
+                    <div class='head'>
+                        <h2>{{ post.title }}</h2>
+                    </div>
+                    <div class="body">
+                        <p>{{ post.content }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+        </form>
+
+        {% if them_bai_viet %}
+        <div class="popup">
+            <form method="POST" action="">
+                <div class="title_add">
+                    <div class="form_nhap_title">
+                        <label for="title">Tiêu đề:</label>
+                        <input type="text" name="title" placeholder="Nhập tiêu đề bài đăng...">
+                    </div>
+                    <button class="Close_app" type="submit" name="Close_app" value="close">X</button>
+                </div>
+                <div class="body_add">
+                    <h2>Nội dung</h2>
+                    <textarea name="content" id="contentTextarea"
+                        placeholder="Nhập nội dung của bạn...">{{ content }}</textarea>
+                    {% if error_no_content %}
+                    <p style="color: red;">{{ error_no_content }}</p>
+                    {% endif %}
+                    <button type="submit" name="accept" value="submit" class="buttonbody add">OK</button>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+
+
+
+
+
+
+    </div>
+</div>
+{% endblock %}

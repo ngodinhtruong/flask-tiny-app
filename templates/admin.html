@@ -22,17 +22,28 @@
         </div>
         <div class="profile-info">
             <p class="greeting">Xin chào, <span class="admin-name">Admin</span></p>
-            <span class="email-tag"><i class="fa-solid fa-envelope"></i> <span class="email-text">admin@gmail.com</span></span>
+            <span class="email-tag"><i class="fa-solid fa-envelope"></i> <span class="email-text">admin@admin.admin</span></span>
         </div>
-        <div class="recent-activity">
-            <h3>Hoạt động gần đây</h3>
-            <p class="activity-item"><i class="fa-solid fa-user-check"></i> Chặn user #123 - 5 phút trước</p>
-            <p class="activity-item"><i class="fa-solid fa-user-plus"></i> Thêm user mới - 1 giờ trước</p>
-        </div>
+        <table class="infor_userlist">
+            <thead>
+                <tr>
+                    <th>Số lượng User</th>
+                    <th>Đang hoạt động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{rows | length}}</td>
+                    <td> {{active_users}}</td>
+                </tr>
+            </tbody>
+
+        </table>
     </div>
 
     <div class="interaction">
         <h1>Danh sách user</h1>
+        
         <div class="table-user">
             <table class='table table-striped table-hover'>
                 <thead>

@@ -1,0 +1,27 @@
+# Sử dụng image Python 3.9 slim để giảm kích thước
+FROM python:3.9-slim
+
+# Đặt thư mục làm việc trong container
+WORKDIR /app
+
+# Sao chép requirements.txt từ thư mục gốc ex1
+COPY ../requirements.txt .
+
+# Cài đặt dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Sao chép toàn bộ mã nguồn từ ex1 (bao gồm templates, static, database)
+COPY .. .
+
+# Tạo thư mục database nếu chưa có (để giữ file mydatabase.db)
+RUN mkdir -p database
+
+# Mở cổng 5000 (mặc định của Flask)
+EXPOSE 5000
+
+# Biến môi trường cho Flask
+ENV FLASK_APP=tinny_app.py
+ENV FLASK_ENV=production
+
+# Lệnh chạy ứng dụng khi container khởi động
+CMD ["flask", "run", "--host=0.0.0.0"]

@@ -1,3 +1,6 @@
+*{
+    font-family: "Poppins", sans-serif;
+}
 .form_1 {
     display: flex;
     justify-content: space-between;
@@ -302,4 +305,62 @@
     display: inline;
     margin: 0;
     padding: 0;
+}
+/* Định dạng bảng infor_userlist */
+.infor_userlist {
+    width: 100%;
+    max-width: 400px; /* Giới hạn chiều rộng để không quá lớn */
+    margin: 20px auto; /* Căn giữa bảng */
+    border-collapse: collapse; /* Gộp viền */
+    background-color: #ffffff; /* Màu nền trắng */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Thêm bóng nhẹ */
+    border-radius: 10px; /* Bo góc */
+    overflow: hidden; /* Ẩn phần tràn ra ngoài */
+}
+
+/* Định dạng header (thead) */
+.infor_userlist thead {
+    background-color: #2c3e50; /* Màu nền tối (xanh đậm) */
+    color: #ffffff; /* Chữ trắng */
+}
+
+/* Định dạng các ô trong header (th) */
+.infor_userlist th {
+    padding: 12px 15px; /* Khoảng cách bên trong */
+    font-size: 1rem; /* Kích thước chữ */
+    font-weight: 600; /* Chữ đậm */
+    text-align: center; /* Căn giữa */
+}
+
+/* Định dạng các ô trong body (td) */
+.infor_userlist td {
+    padding: 12px 15px; /* Khoảng cách bên trong */
+    font-size: 0.95rem; /* Kích thước chữ */
+    color: #34495e; /* Màu chữ tối */
+    text-align: center; /* Căn giữa */
+    border-top: 1px solid #e0e0e0; /* Viền nhẹ giữa các hàng */
+}
+
+/* Hiệu ứng hover trên hàng */
+.infor_userlist tbody tr:hover {
+    background-color: #f8f9fa; /* Màu nền sáng khi hover */
+    transition: background-color 0.3s ease; /* Hiệu ứng mượt */
+}
+
+/* Định dạng số liệu nổi bật */
+.infor_userlist td {
+    font-weight: 500; /* Chữ hơi đậm cho số liệu */
+}
+
+/* Responsive cho màn hình nhỏ */
+@media (max-width: 768px) {
+    .infor_userlist {
+        max-width: 100%; /* Chiếm toàn bộ chiều rộng trên màn hình nhỏ */
+    }
+
+    .infor_userlist th,
+    .infor_userlist td {
+        font-size: 0.85rem; /* Giảm kích thước chữ */
+        padding: 10px; /* Giảm khoảng cách */
+    }
 }

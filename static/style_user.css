@@ -1,0 +1,322 @@
+
+/* Phần interaction (danh sách bài post) */
+.interaction_user {
+    margin: 0 auto;
+    background: #f0f2f5;
+    padding: 20px;
+    border-radius: 8px;
+    width: 70%;
+}
+
+/* Tiêu đề chính */
+.interaction_user h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 1.8rem;
+}
+
+/* Container nút Thêm Bài Viết, Xóa bài viết, Xác nhận xóa */
+.button_add_post{
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    /* margin-bottom: 15px; */
+}
+
+/* Định dạng chung cho nút */
+.buttonbody {
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    font-size: 14px;
+}
+
+/* Nút Thêm Bài Viết */
+.add {
+    background-color: #28a745;
+}
+
+.add:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+/* Nút Xóa bài viết và Xác nhận xóa */
+.delete {
+    background-color: #dc3545;
+}
+
+.delete:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+}
+
+/* Nút nhỏ (Xóa, Chỉnh sửa) */
+.small {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+/* Nút Xóa nhỏ (màu xám nhạt theo hình ảnh) */
+.deletesmall {
+    background-color: #ccc; /* Màu xám nhạt */
+    color: #333; /* Màu chữ tối để dễ đọc */
+}
+
+.deletesmall:hover {
+    background-color: #bbb;
+    transform: translateY(-1px);
+}
+
+/* Nút Chỉnh sửa nhỏ (xanh lá theo hình ảnh) */
+.edit.small {
+    background-color: #28a745;
+}
+
+.edit.small:hover {
+    background-color: #218838;
+    transform: translateY(-1px);
+}
+
+/* Container bài đăng */
+.all_post {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    overflow-y: auto;
+    max-height: 70vh;
+}
+
+/* Bài đăng cá nhân */
+.show_post {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Đầu bài đăng (tiêu đề và checkbox) */
+.show_post > div:first-child {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Căn trái hoàn toàn checkbox và tiêu đề */
+    gap: 8px;
+}
+
+.head h2 {
+    color: #34495e;
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+/* Nội dung bài đăng */
+.body {
+    padding: 8px 0;
+}
+
+.body p {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Checkbox */
+.delete-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* Chức năng (Xóa, Chỉnh sửa) */
+.chucnang {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+/* Nút phân trang */
+.next-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.next-btn:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* Ẩn nút Xác nhận xóa mặc định (nếu cần JavaScript để hiển thị) */
+.confirm-delete {
+    display: none;
+}
+
+.delete-form {
+    overflow-y: auto;
+}
+
+/* Popup */
+.popup {
+    position: fixed; /* Sử dụng fixed thay vì absolute để popup luôn ở giữa màn hình */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Căn giữa chính xác */
+    background-color: #fffef2; /* Màu wheat nhạt hơn chút cho dễ nhìn */
+    width: 700px;
+    max-width: 90%; /* Đảm bảo không vượt quá màn hình nhỏ */
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 15px; /* Bo góc cho đẹp */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2); /* Thêm bóng */
+    z-index: 1000; /* Đảm bảo popup nằm trên các phần khác */
+    overflow: hidden; /* Ẩn nội dung tràn ra */
+}
+
+.title_add {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #ddd;
+    background-color: #f8f6e9; /* Màu nền nhẹ cho header */
+}
+
+.Close_app {
+    background-color: #454545;
+    color: white;
+    border: none;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%; /* Nút tròn */
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+    margin-left: 20px;
+}
+
+.Close_app:hover {
+    background-color: #666;
+}
+
+.form_nhap_title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.form_nhap_title label {
+    font-size: 24px; /* Giảm kích thước chữ cho hợp lý */
+    color: #34495e;
+    font-weight: 600;
+}
+
+.form_nhap_title input {
+    flex: 1; /* Chiếm toàn bộ không gian còn lại */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.form_nhap_title input:focus {
+    border-color: #2c3e50;
+}
+
+.body_add {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    flex: 1; /* Chiếm toàn bộ không gian còn lại */
+    gap: 5px;
+}
+
+.body_add h2 {
+    color: #34495e;
+    font-size: 20px;
+    margin: 0 0 15px 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.body_add input {
+    width: 100%; /* Full width trong container */
+    height: 70%; /* Giảm chiều cao để vừa với popup */
+    padding: 15px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    resize: none; /* Ngăn kéo giãn */
+    outline: none;
+    font-family: 'Open Sans', sans-serif;
+    transition: border-color 0.3s ease;
+}
+
+.body_add input:focus {
+    border-color: #2c3e50;
+}
+
+/* Responsive cho popup */
+@media (max-width: 768px) {
+    .popup {
+        width: 90%;
+        height: 400px;
+    }
+    
+    .form_nhap_title label {
+        font-size: 18px;
+    }
+    
+    .form_nhap_title input {
+        font-size: 14px;
+    }
+    
+    .body_add input {
+        font-size: 14px;
+    }
+}
+.body_add textarea{
+    min-width: 500px;
+    min-height: 300px;
+}
+
+.div_page{
+    display: flex;
+    /* justify-content: center; */
+    
+
+    align-items: center;
+    gap: 10px;
+}
+
+.page_number{
+    border: 1px solid burlywood;
+    width: 40px;
+    height: 30px;
+    text-align: center;
+    padding-top: 5px;
+
+}
+.page{
+    font-size: 20px;
+}
