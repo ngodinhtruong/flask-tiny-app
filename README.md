@@ -78,7 +78,7 @@ Dự án là một ứng dụng web (webapp) cho phép người dùng (user) t�
 **1. Docker**
 
 - pull: `docker pull zsaber/flask_tinny_app:latest`
-- run:  `docker run -d -p 5000:5000 flask_tiny_app`
+- run:  `docker run -d -p 5000:5000 flask_tinny_app`
 
 **2. Window**
 - run  `setup_ex1.bat`
