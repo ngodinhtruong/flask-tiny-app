@@ -5,6 +5,7 @@
 - Ngô Trường Định - 2264171
 - Phan Thành Đạt - 22641631
 
+
 ## 2. Thông tin project
 
 Dự án là một ứng dụng web (webapp) cho phép người dùng (user) tạo, quản lý blog cá nhân và quản trị viên (admin) giám sát, quản lý người dùng cũng như nội dung trên hệ thống. Ứng dụng được xây dựng với mục tiêu cung cấp giao diện đơn giản, dễ sử dụng, đồng thời đảm bảo tính năng cơ bản của một hệ thống blog như đăng bài, chỉnh sửa, xóa bài và phân trang.
@@ -91,3 +92,7 @@ Dự án là một ứng dụng web (webapp) cho phép người dùng (user) t�
  - Nền tảng: `Pythoanywhere`
  - Link: `https://ngotruongdinh.pythonanywhere.com/signin`
  - github: `https://github.com/ngodinhtruong/flask-tiny-app/blob/master`
+
+**Tai khoản admin: **
+- Tài khoản: admin@admin.admin
+- Mật khẩu:  admin
