@@ -93,6 +93,6 @@ Dự án là một ứng dụng web (webapp) cho phép người dùng (user) t�
  - Link: `https://ngotruongdinh.pythonanywhere.com/signin`
  - github: `https://github.com/ngodinhtruong/flask-tiny-app/blob/master`
 
-**Tai khoản admin: **
+**Tai khoản admin:**
 - Tài khoản: admin@admin.admin
 - Mật khẩu:  admin
